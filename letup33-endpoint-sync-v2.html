@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>LETUP33</title>
+  <meta name="theme-color" content="#0b0f14">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="letup33-spa.css">
+
+  <script id="lp33-boot-config" type="application/json">
+  {
+    "endpoints": {
+      "liveStat": "/getLiveStat.php",
+      "login": "/login.php",
+      "register": "/register/SMSRegister",
+      "changeBank": "/changeBank",
+      "changeName": "/changeName",
+      "changeEmail": "/changeEmail",
+      "letup33": "https://proxy.corsfix.com/?https://letup33.com/api/v1/index.php",
+      "walletFallback": "/api/wallet",
+      "bankFallback": "/api/user/bank"
+    },
+    "liveTx": { "maxRows": 6, "sources": [{ "mId": "60979", "game": "SLOT" }] },
+    "letup33_agent": "",
+    "ticker": "HO LIAO! WIN WIN"
+  }
+  </script>
+  <meta name="csrf-token" content="">
+</head>
+<body>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<header id="header">
+  <button type="button" class="opensidemenu fa-bars" aria-label="Open side menu"> </button>
+  <a href="#home" id="home-logo-link" class="home-logo">LETUP33</a>
+<a href="#change" id="home-logo-link" class="home-logo">BANK</a>
+  <div class="button-container">
+    <div class="letup33-header-guest" data-auth="guest">
+      <a class="btn btn-login" id="letup33LoginLink" href="#login">LOGIN</a>
+      <a class="btn btn-register" id="letup33RegisterLink" href="#register">JOIN NOW</a>
+    </div>
+    <div class="letup33-header-member" data-auth="member" hidden>
+      <div class="letup33-wallet" id="letup33WalletTrigger" role="button" tabindex="0"
+           aria-haspopup="dialog" aria-controls="letup33WalletModal" aria-label="Open wallet">
+        <span class="letup33-wpill">
+          <span class="ic" aria-hidden="true">&#9679;</span>
+          <span class="amt" id="letup33Amt">RM 0.00</span>
+          <span class="cv">MYR</span>
+        </span>
+      </div>
+      <a class="letup33-wdep" href="#deposit" id="letup33DepositLink">DEPOSIT</a>
+    </div>
+  </div>
+</header>
+
+<div class="providedbylb" aria-hidden="true">
+  <div class="toggle-wrapper"><span class="show"></span><span class="hide"></span></div>
+  <div class="scrollable">
+    <div class="heading"></div>
+    <ul class="menu"></ul>
+    <div class="copyrighttext"><p></p></div>
+  </div>
+</div>
+
+<div id="marquee" class="ticker" aria-hidden="true"></div>
+
+<main id="content">
+
+  <!-- ───────────── ROUTE: HOME ───────────── -->
+  <section id="home" data-route="home" class="route-active">
+    <div class="balance-wrapper">
+      <div id="home-balance">
+        <div class="A">
+          <div class="pinfo">
+            <div class="welcome-name"><span class="welcome">Welcome,</span> <span class="vc-name">—</span></div>
+            <div class="vc-username">—</div>
+          </div>
+          <div class="vc-balance">RM 0.00</div>
+          <div class="vc-note">
+            <span class="rollover">Rollover
+              <span class="range-in" style="width:0%"></span><span class="range-out"></span>
+            </span>
+          </div>
+          <div class="btns">
+            <button type="button" class="btn vc-refresh" title="Refresh" aria-label="Refresh">&#8635;</button>
+            <button type="button" class="btn vc-withdraw" title="Withdraw" aria-label="Withdraw">WITHDRAW</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="checkinWidget" class="ciw-widget" aria-label="Daily check-in" hidden></div>
+    <div id="home-game"></div>
+
+    <div class="refer-wrapper">
+      <div id="home-refer-share">
+        <div class="header">Share Referral</div>
+        <div class="refer-code"><var id="letup33Username">—</var></div>
+        <img class="refer-qrcode" alt="Referral QR" hidden>
+        <p class="refer-qrcode-note"></p>
+        <a class="method" data-method="whatsapp" href="#" target="_blank" rel="noopener">Share via WhatsApp</a>
+      </div>
+    </div>
+
+    <div id="promotion">
+      <div class="center-wrapper"><div class="packet-group"><div class="packet"></div></div></div>
+    </div>
+
+    <div class="livetx-widget">
+      <div class="tx-title-bar"><h2>Live Transactions</h2><span class="live-tag">LIVE</span></div>
+      <div id="tx-body"></div>
+    </div>
+
+    <div id="home-featured"></div>
+  </section>
+
+  <!-- ───────────── ROUTE: CHANGE ───────────── -->
+  <section id="change" data-route="change">
+    <div id="changeBank">
+      <div class="t1">Change Bank Account</div>
+      <div class="t2">Update your withdrawal bank details</div>
+      <div class="bank-banner"></div>
+      <table><tbody>
+        <tr><td>Bank</td>
+          <td><select name="bank" aria-label="Bank"><option value="">Select bank</option></select></td></tr>
+        <tr><td>Account Holder</td>
+          <td><input name="accountName" type="text" placeholder="Account holder name"></td></tr>
+        <tr><td>Account Number</td>
+          <td><input name="accountNumber" type="text" inputmode="numeric" placeholder="Account number"></td></tr>
+      </tbody></table>
+      <p class="note">Bank details are locked after first successful withdrawal; contact support to change.</p>
+      <button type="button" class="update btn">SAVE CHANGES</button>
+    </div>
+
+    <div id="changeName">
+      <div class="t1">Change Name</div>
+      <div class="t2">Update your full name</div>
+      <table><tbody>
+        <tr><td>Full Name</td>
+          <td><input name="name" type="text" placeholder="Full name"></td></tr>
+      </tbody></table>
+      <button type="button" class="update btn">SAVE CHANGES</button>
+    </div>
+
+    <div id="changeEmail">
+      <div class="t1">Change Email</div>
+      <div class="t2">Update your email address</div>
+      <table><tbody>
+        <tr><td>Email</td>
+          <td><input name="email" type="email" placeholder="name@domain.com"></td></tr>
+      </tbody></table>
+      <button type="button" class="update btn">SAVE CHANGES</button>
+    </div>
+
+    <div id="changePassword">
+      <div class="t1">Change Password</div>
+      <table><tbody>
+        <tr><td>Current Password</td>
+          <td class="inline"><input type="password" name="currentPassword"><i class="eye" role="button" tabindex="0" aria-label="Show password"></i></td></tr>
+        <tr><td>New Password</td>
+          <td class="inline"><input type="password" name="newPassword"><i class="eye" role="button" tabindex="0" aria-label="Show password"></i></td></tr>
+        <tr><td>Confirm Password</td>
+          <td class="inline"><input type="password" name="confirmPassword"><i class="eye" role="button" tabindex="0" aria-label="Show password"></i></td></tr>
+      </tbody></table>
+      <p class="note">Use 8–16 characters with letters and numbers.</p>
+      <button type="button" class="update btn">SUBMIT</button>
+    </div>
+  </section>
+
+  <!-- ───────────── ROUTE: VIP ───────────── -->
+  <section id="vip-page" data-route="vip">
+    <div class="container">
+      <div class="title-banner-full">
+        <img src="https://static.gwvkyk.com/media/d013fa230dca6708520e5.webp" alt="VIP" class="title-banner is-rounded">
+      </div>
+      <div class="status-grid">
+        <div class="status-bar-row">
+          <div class="status-box"><span>Lifetime Deposit:</span> <span class="status-value" data-vip="lifetime">RM 0 / 0</span></div>
+          <div class="status-box"><span>Monthly Deposit:</span> <span class="status-value" data-vip="monthly">RM 0 / 0</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ───────────── WALLET MODAL ───────────── -->
+<div id="letup33WalletModal" role="dialog" aria-modal="true" aria-label="Wallet" hidden>
+  <div class="lp-k-wallet">
+    <div class="lp-k-head">
+      <span id="letup33Account">—</span>
+      <button type="button" id="lpKLogout" class="lp-k-logout">LOGOUT</button>
+    </div>
+
+    <div class="lp-k-dial" id="lpKDial" role="progressbar"
+         aria-label="Turnover progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <span class="lp-k-dot" id="lpKDot" aria-hidden="true"></span>
+      <span id="lpKProgressLabel">—</span>
+    </div>
+
+    <label class="lp-k-vip-toggle"><input type="checkbox" id="lpKVip"> VIP</label>
+
+    <div class="lp-k-fields">
+      <span>VIP Progress</span><span>Level</span><span>Rollover</span>
+      <span id="letup33VipAmount">—</span><span id="letup33VipBadge">—</span>
+      <span id="letup33RolloverPercent">0%</span>
+      <div class="lp-bar"><div id="letup33RolloverFill" style="width:0%"></div></div>
+      <span>Min WD: <b id="letup33WdMin">RM 0.00</b></span>
+      <span>Max WD: <b id="letup33WdMax">RM 0.00</b></span>
+      <span>Min Dep: <b id="letup33DepMin">RM 0.00</b></span>
+    </div>
+
+    <div class="lp-k-tabs">
+      <button type="button" id="letup33TabDeposit">DEPOSIT</button>
+      <button type="button" id="letup33TabWithdraw">WITHDRAW</button>
+      <button type="button" id="letup33Refresh">REFRESH</button>
+      <button type="button" id="letup33HistoryLink">HISTORY</button>
+      <button type="button" id="letup33VipLink">VIP</button>
+      <button type="button" id="letup33ClearBalance">CLEAR</button>
+    </div>
+
+    <button type="button" id="letup33WalletModalClose" aria-label="Close wallet">&times;</button>
+
+    <div id="lpKConfirm" hidden>
+      <p class="lp-k-confirm-text">Log keluar daripada akaun ini?</p>
+      <button type="button" id="lpKConfirmLogout">CONFIRM LOGOUT</button>
+      <button type="button" id="lpKCancel">CANCEL</button>
+    </div>
+  </div>
+
+  <div class="lp-k-stubs" aria-hidden="true">
+    <span id="letup33Balance"           class="lp-k-stub" hidden></span>
+    <span id="letup33RolloverAmount"    class="lp-k-stub" hidden></span>
+    <span id="lp-native-deposit-overlay" class="lp-k-stub" hidden></span>
+    <span id="storeBalance"             class="lp-k-stub" hidden></span>
+    <span id="storeBalanceNum"          class="lp-k-stub" hidden></span>
+    <span id="storeBalanceUnit"         class="lp-k-stub" hidden></span>
+    <span id="storeBody"                class="lp-k-stub" hidden></span>
+    <span id="storeCard"                class="lp-k-stub" hidden></span>
+    <span id="storeHistory"             class="lp-k-stub" hidden></span>
+    <span id="storeHistoryList"         class="lp-k-stub" hidden></span>
+    <span id="storePreviewHint"         class="lp-k-stub" hidden></span>
+    <span id="storeSub"                 class="lp-k-stub" hidden></span>
+  </div>
+</div>
+
+<template id="letup-deposit-country-template">
+  <button type="button" data-country="my">MY</button>
+</template>
+
+<script src="app.js" defer></script>
+</body>
+</html>
